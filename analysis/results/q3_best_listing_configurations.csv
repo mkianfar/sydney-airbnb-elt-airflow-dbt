@@ -1,0 +1,16 @@
+listing_neighbourhood,property_type,room_type,accommodates,total_stays,rank_in_nhood
+Hunters Hill,Entire apartment,Entire home/apt,4,1402,1
+Hunters Hill,Private room in house,Private room,2,1058,2
+Hunters Hill,Entire apartment,Entire home/apt,2,828,3
+Mosman,Entire apartment,Entire home/apt,2,19432,1
+Mosman,Entire apartment,Entire home/apt,4,17490,2
+Mosman,Entire house,Entire home/apt,8,9507,3
+Northern Beaches,Entire apartment,Entire home/apt,4,131830,1
+Northern Beaches,Entire apartment,Entire home/apt,2,122642,2
+Northern Beaches,Entire house,Entire home/apt,8,91841,3
+Waverley,Entire apartment,Entire home/apt,2,210382,1
+Waverley,Entire apartment,Entire home/apt,4,205023,2
+Waverley,Private room in apartment,Private room,2,178539,3
+Woollahra,Entire apartment,Entire home/apt,2,57393,1
+Woollahra,Entire apartment,Entire home/apt,4,46764,2
+Woollahra,Private room in apartment,Private room,2,36236,3

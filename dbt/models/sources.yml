@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Raw data as delivered, loaded by the Airflow DAGs. Every column is text.
+    schema: bronze
+    tables:
+      - name: airbnb_raw
+        description: Monthly Airbnb listing snapshots for Sydney. `load_month` is the month of the file a row came from.
+        columns:
+          - name: listing_id
+            tests: [not_null]
+          - name: load_month
+            tests: [not_null]
+      - name: nsw_lga_code_raw_csv
+      - name: nsw_lga_suburb_raw_csv
+      - name: census_g01_raw_csv
+      - name: census_g02_raw_csv

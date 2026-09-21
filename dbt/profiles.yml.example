@@ -1,0 +1,13 @@
+# Copy to ~/.dbt/profiles.yml (or point DBT_PROFILES_DIR at this folder) and export the PG* variables.
+airbnb_elt:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('PGHOST', 'localhost') }}"
+      port: "{{ env_var('PGPORT', '5432') | as_number }}"
+      user: "{{ env_var('PGUSER') }}"
+      password: "{{ env_var('PGPASSWORD', '') }}"
+      dbname: "{{ env_var('PGDATABASE', 'postgres') }}"
+      schema: public # base schema only; models write to exactly `silver` and `gold` (see macros/generate_schema_name.sql)
+      threads: 4

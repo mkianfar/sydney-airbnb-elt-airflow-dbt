@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  # ------------------------------------------------------------------ silver
+  - name: silver_listings
+    description: One typed row per listing per month (month taken from scraped_date), duplicates resolved.
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [listing_id, month_key]
+    columns:
+      - name: listing_id
+        tests: [not_null]
+      - name: month_key
+        tests: [not_null]
+
+  - name: silver_nsw_lga_code
+    columns:
+      - name: lga_code
+        tests: [unique, not_null]
+
+  # ------------------------------------------------------------------ gold: dimensions
+  - name: dim_lga
+    columns:
+      - name: lga_code
+        tests: [unique, not_null]
+
+  - name: dim_place
+    description: Normalised place name -> LGA, shared by the fact table and the host mart.
+    columns:
+      - name: place_key
+        tests: [unique, not_null]
+      - name: lga_code
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_lga')
+                field: lga_code
+
+  - name: dim_listing
+    description: SCD2 listing history; validity windows are half-open [valid_from, valid_to).
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [listing_id, valid_from]
+
+  - name: dim_host
+    description: SCD2 host history; validity windows are half-open [valid_from, valid_to).
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [host_id, valid_from]
+
+  # ------------------------------------------------------------------ gold: fact
+  - name: fact_listing_monthly
+    description: One row per listing per month. Keys and measures only.
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [listing_id, snap_month]
+    columns:
+      - name: listing_id
+        tests: [not_null]
+      - name: snap_month
+        tests: [not_null]
+      - name: host_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_host')
+                field: host_id
+      - name: lga_code
+        description: NULL when the listing neighbourhood matches no LGA or suburb.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_lga')
+                field: lga_code
+
+  # ------------------------------------------------------------------ gold: marts
+  - name: dm_listing_neighbourhood
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [listing_neighbourhood, month]
+
+  - name: dm_property_type
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [property_type, room_type, accommodates, month]
+
+  - name: dm_host_neighbourhood
+    tests:
+      - unique_combination:
+          arguments:
+            columns: [host_neighbourhood_lga, month]

@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+.pytest_cache/
+# local data and credentials never go in the repo
+data/
+dbt/profiles.yml
+.env
+# dbt build output
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+dbt/.user.yml
